@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption Application</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Happy Paws</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id="home-link">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="about-link">
+                    <a class="nav-link" href="about-us.html">About Us</a>
+                </li>
+                <li class="nav-item" id="browse-link">
+                    <a class="nav-link" href="browse-pets.html">Browse Pets</a>
+                </li>
+                <li class="nav-item" id="register-link">
+                    <a class="nav-link" href="Registration.html">Register</a>
+                </li>
+                <li class="nav-item" id="login-link">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="user-info" style="display: none;">
+                    <span class="nav-link">Logged in as <span id="username-display"></span></span>
+                </li>
+                <li class="nav-item" id="logout-link" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-5">
+    <h1>Adoption Application</h1>
+    <form id="adoptionForm" class="mt-4">
+        <div class="form-group">
+            <label for="petId">Pet ID:</label>
+            <input type="text" class="form-control" id="petId" name="petId" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="applicantName">Applicant Name:</label>
+            <input type="text" class="form-control" id="applicantName" name="applicantName" required>
+        </div>
+        <div class="form-group">
+            <label for="applicantEmail">Applicant Email:</label>
+            <input type="email" class="form-control" id="applicantEmail" name="applicantEmail" required>
+        </div>
+        <div class="form-group">
+            <label for="reason">Reason for Adoption:</label>
+            <textarea class="form-control" id="reason" name="reason" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Application</button>
+    </form>
+</div>
+
+<footer class="footer mt-5">
+    <p>&copy; 2023 Happy Paws. All rights reserved.</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('petId');
+        if (petId) {
+            document.getElementById('petId').value = petId;
+        }
+
+        const loggedInUsername = localStorage.getItem('username');
+        const loggedInEmail = localStorage.getItem('email');
+        if (loggedInUsername) {
+            document.getElementById('applicantName').value = loggedInUsername;
+        }
+        if (loggedInEmail) {
+            document.getElementById('applicantEmail').value = loggedInEmail;
+        }
+    });
+
+    document.getElementById('adoptionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch('/api/adopt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Application submitted successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to submit application.');
+        });
+    });
+
+    const loggedInUsername = localStorage.getItem('username');
+    if (loggedInUsername) {
+        document.getElementById('register-link').style.display = 'none';
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('user-info').style.display = 'block';
+        document.getElementById('username-display').textContent = loggedInUsername;
+    }
+</script>
+</body>
+</html>

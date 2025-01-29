@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption Approval</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Happy Paws</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id="home-link">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="about-link">
+                    <a class="nav-link" href="about-us.html">About Us</a>
+                </li>
+                <li class="nav-item" id="browse-link">
+                    <a class="nav-link" href="browse-pets.html">Browse Pets</a>
+                </li>
+                <li class="nav-item" id="register-link">
+                    <a class="nav-link" href="Registration.html">Register</a>
+                </li>
+                <li class="nav-item" id="login-link">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="user-info" style="display: none;">
+                    <span class="nav-link">Logged in as <span id="username-display"></span></span>
+                </li>
+                <li class="nav-item" id="logout-link" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-5">
+    <h1>Adoption Approval</h1>
+    <form id="approvalForm" class="mt-4">
+        <div class="form-group">
+            <label for="applicationId">Application ID:</label>
+            <input type="text" class="form-control" id="applicationId" name="applicationId" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="approvalDate">Approval Date:</label>
+            <input type="datetime-local" class="form-control" id="approvalDate" name="approvalDate">
+        </div>
+        <div class="form-group">
+            <label for="comments">Comments:</label>
+            <textarea class="form-control" id="comments" name="comments"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Approval</button>
+    </form>
+</div>
+
+<footer class="footer mt-5">
+    <p>&copy; 2023 Happy Paws. All rights reserved.</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('applicationId');
+        if (applicationId) {
+            document.getElementById('applicationId').value = applicationId;
+        }
+    });
+
+    document.getElementById('approvalForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch('/api/approve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Approval submitted successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to submit approval.');
+        });
+    });
+</script>
+</body>
+</html>

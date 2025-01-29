@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy Paws - Pet Adoption</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header will be loaded here -->
+
+<main>
+    <!-- Hero Section -->
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Welcome to Happy Paws</h1>
+            <p class="lead">Your one-stop shop for happy pets.</p>
+        </div>
+    </section>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- App Recommendations -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-star text-primary mr-2"></i>App Recommendations</h5>
+                    </div>
+                    <div class="card-body" id="app-recommendations">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-walking text-primary mr-2"></i>
+                                Top-rated dog walkers in your area
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-cut text-primary mr-2"></i>
+                                Find the purrfect groomer
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-hospital text-primary mr-2"></i>
+                                Affordable veterinary care
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-home text-primary mr-2"></i>
+                                Trusted pet sitters for your peace of mind
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-comments text-primary mr-2"></i>Reviews</h5>
+                    </div>
+                    <div class="card-body" id="reviews">
+                        <!-- Reviews will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Partners Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-handshake text-primary mr-2"></i>Partners</h5>
+            </div>
+            <div class="card-body" id="partners">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-store text-primary mr-2"></i>Local Partners</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">Local pet service businesses</li>
+                            <li class="mb-2">Professional groomers</li>
+                            <li class="mb-2">Veterinary clinics</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-globe text-primary mr-2"></i>National Partners</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">Pet food suppliers</li>
+                            <li class="mb-2">Pet accessories</li>
+                            <li class="mb-2">Pet care products</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer mt-auto">
+    <div class="container text-center py-3">
+        <p class="mb-0">&copy; 2023 Happy Paws. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Enlist Pet Modal -->
+<div class="modal fade" id="enlistPetModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-paw mr-2"></i>Enlist a Pet</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="enlistPetForm">
+                    <div class="form-group">
+                        <label for="petName">Pet Name</label>
+                        <input type="text" class="form-control" id="petName" name="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="text" class="form-control" id="imageUrl" name="imageUrl" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/header.js"></script>
+
+<script>
+    document.getElementById('enlistPetForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new URLSearchParams(new FormData(this)).toString();
+        fetch('http://localhost:9007/api/pets', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Pet enlisted successfully!');
+                $('#enlistPetModal').modal('hide');
+                location.reload();
+            } else {
+                alert('Failed to enlist pet.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

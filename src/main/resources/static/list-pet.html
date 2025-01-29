@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List a Pet</title>
+    <link rel="stylesheet" href="css/list-pet.css">
+</head>
+<body>
+<div class="container">
+    <h1>List a Pet</h1>
+    <form id="listPetForm" class="form">
+        <!-- Existing form fields -->
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="species">Species:</label>
+            <input type="text" id="species" name="species" required>
+        </div>
+        <div class="form-group">
+            <label for="breed">Breed:</label>
+            <input type="text" id="breed" name="breed" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="photos">Photos URL:</label>
+            <input type="text" id="photos" name="photos" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status" required>
+        </div>
+        <!-- Submit button -->
+        <div class="form-group">
+            <button type="submit" class="btn">Submit</button>
+        </div>
+    </form>
+</div>
+<script src="js/list-pet.js"></script>
+</body>
+</html>
